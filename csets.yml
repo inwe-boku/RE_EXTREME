@@ -1,0 +1,11 @@
+# yaml config for ReExtreme GAMS Cost sensitivity analysis
+config:
+  simdir: '/tmp/gams-biofuel/sim'
+  resdir: '/tmp/gams-biofuel/res'
+
+tuples:
+  perm:
+    wf_elh: [18, 160]
+    cp_elh: [0, 40, 450, 880, 1300, 1760, 2800, 3610, 5000, 7500, 10000, 20000, 50000, 100000]
+    pr_elh: [50, 100]
+    hy_rmp: [1,2,5]
