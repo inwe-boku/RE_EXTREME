@@ -33,7 +33,7 @@ $if not set HY_RMP   $set HY_RMP      5
 
 SETS
   scenario    /scen1*scen4/
-  year        /y1986*y2014/
+  year        /y1986*y2010/
   month       /m1*m12/
   hour        /h0001*h8784/
   month_hour(month,hour)
@@ -55,38 +55,33 @@ SETS
 
 * INFLOW hydro in m3 MW
 PARAMETER TS_INFLOW(year, hour)/
-$include ../Data/gams/shype_unlimited_full.csv
+$include DATA/HY/TS_Hydro.csv
 /;
 
 * bias correction factor reduce potential production by 10%
 TS_INFLOW(year, hour) = TS_INFLOW(year, hour) / 1.1;
 
-* NUCLEAR production per szenario 
-PARAMETER PROD_NUCLEAR(scenario, year, hour)/
-$include ../Data/gams/ts_nuclear_annually.csv
-/;
-
 * THERMAL production
 PARAMETER PROD_THERMAL(type<, fuel<)/
-$include ../Data/gams/ts_thermal_annually.csv
+$include DATA/TH/thermal_capacities.csv
 /;
 
 PARAMETER PROD_THERMAL_TYPE;
 PROD_THERMAL_TYPE(type) = sum(fuel, PROD_THERMAL(type, fuel));
 
-* THERMAL costs, from -128 / 24 to 100
+* THERMAL costs; € per MWh
 PARAMETER COST_THERMAL(type)/
-$include ../Data/gams/cost_thermal_co2.csv
+$include DATA/TH/cost_thermal_co2.csv
 /;
 
 * THERMAL minimum production
 PARAMETER THERMAL_MIN_MONTH(month, type)/
-$include ../Data/gams/thermal_min_monthtype.csv
+$include DATA/TH/thermal_min_monthtype.csv
 /;
 
 * THERMAL maximum production
 PARAMETER THERMAL_MAX_MONTH(month, type)/
-$include ../Data/gams/thermal_max_monthtype.csv
+$include DATA/TH/thermal_max_monthtype.csv
 /;
 
 
@@ -135,7 +130,7 @@ PARAMETERS
   MINENDSTORAGE   = MAXSTORAGE * P_MINHY / 100;
   MAXRAMP         = 4000;
   MAXRAMPTHERMAL  = 1500;
-* ramping of hydrolysis: xx % of total capacity
+* ramping of H2 prod: xx % of total capacity
   MAXRAMPELH2     = PR_ELH * CP_ELH / 100;
 * http://www.svenskenergi.se/Global/Statistik/El%C3%A5ret/QUICK%20FACTS%20ABOUT%20SWEDEN%20AND%20ENERGY_2014.pdf
   HYDROCAPACITY   = 16155;
@@ -146,17 +141,17 @@ PARAMETERS
   
 * net load per szenario in MW
 PARAMETER TS_NET_LOAD(scenario, year, hour)/
-$include ../Data/Biofuel/loadelh2/net_load_full-%CP_ELH%.csv
+$include DATA/LD/TS_NETLOAD-%CP_ELH%.csv
 /;
 
 * IRE production per szenario MW
 PARAMETER PROD_IRE(scenario, year, hour)/
-$include ../Data/Biofuel/windelh2/ts_ire_annually-%CP_ELH%.csv
+$include DATA/WN/TS_Wind-%CP_ELH%.csv
 /;
 
 * HYDRO minimum flow, monthly values
 PARAMETER HYDRO_MIF_MONTH(month)/
-$include ../Data/gams/Hydro/MIF%HY_RMP%.csv
+$include DATA/HY/MIF/MIF%HY_RMP%.csv
 /;
 
 * HYDRO minimum flow remapped to hours
@@ -165,7 +160,7 @@ HYDRO_MIF_HOUR(hour) = sum(month $month_hour(month, hour), HYDRO_MIF_MONTH(month
 
 * HYDRO maximum ramping per month
 PARAMETER HYDRO_MRR_MONTH(month)/
-$include ../Data/gams/Hydro/MRR%HY_RMP%.csv
+$include DATA/HY/MRR/MRR%HY_RMP%.csv
 /;
 
 * HYDRO maximum ramping remapped to hours
@@ -381,7 +376,7 @@ outfile.nd=3;
 * CSV Header
 PUT "model_stat" "solver_stat" "res_used"
 PUT  "scenario" "year" "hour"
-PUT "total_cost" "NET_LOAD" "VREgen" "NUCLEAR_gen" "hydro_generation" "thermal_generation"  "curtailment"  "loss_of_load" "res_level" "hydro_spill"
+PUT "total_cost" "NET_LOAD" "VREgen" "hydro_generation" "thermal_generation"  "curtailment"  "loss_of_load" "res_level" "hydro_spill"
 LOOP(type,
   PUT type.tl 
 );
@@ -409,7 +404,6 @@ LOOP(scenario$(ord(scenario) = 3),
     NET_LOAD(hour)              = TS_NET_LOAD(scenario, year, hour);
     INFLOW(hour)                = TS_INFLOW(year, hour);
     IRE(hour)                   = PROD_IRE(scenario, year, hour);
-    NUCLEAR(hour)               = PROD_NUCLEAR(scenario, year, hour);
 
 * solve Model
 
@@ -426,7 +420,6 @@ LOOP(scenario$(ord(scenario) = 3),
       PUT total_cost.L
       PUT NET_LOAD(hour)
       PUT IRE(hour)
-      PUT NUCLEAR(hour)
       PUT x_hydro_gen.L(hour)
       PUT sum(type, x_thermal_gen.L(hour, type))
       PUT x_curtailment.L(hour)
