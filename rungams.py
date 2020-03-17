@@ -12,7 +12,7 @@ import time
 def create_argparser():
     parser = argparse.ArgumentParser(description='runs gams processes in parallel\n')
     parser.add_argument('-s', '--sim', default='sim.gms', dest='sim',
-                                        help='defines the yaml file')
+                                        help='defines the simulation file')
     parser.add_argument('-y', '--yaml', default='csets.yml', dest='yml',
                                         help='defines the yaml file')
     parser.add_argument('-p', '--procs', type=int, default=multiprocessing.cpu_count()-1, dest='max_procs',
