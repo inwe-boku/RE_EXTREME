@@ -1,5 +1,7 @@
 # RE_EXTREME
 
+This code accompanies the paper "Trade-offs between hydrogen production and hydropower flexibility in a Swedish power system with high shares of renewables" currently available as preprint at ![engrxiv](https://engrxiv.org/kgxr7/).
+
 To run a set of simulations automatically run the helper tool rungams as follows:
 ```
 python3 rungams.py -s min_cost_elh2.gms -y csets.yml -p 28 --run --clean
