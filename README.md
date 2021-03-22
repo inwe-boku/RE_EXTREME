@@ -16,11 +16,11 @@ Mikovits, C; Wetterlund, E; Wehrle, S; Baumgartner, J; Schmidt, J.
 (2021): Stronger together: Multi-annual variability of hydrogen production supported by wind power in Sweden
 APPL ENERG. 2021; 282, 116082 http://dx.doi.org/10.1016/j.apenergy.2020.116082
 
-## Result Downloads
+## Results
 
 Results can be found here: https://zenodo.org/record/3712940
 
-## Accknowledgements
+## Acknowledgements
 
 The Swedish Research Council Formas (dnr. 2016–20118) and Bio4Energy, Sweden financially supported this work. We also gratefully acknowledge support from the European Research Council (“reFUEL” ERC2017-STG 758149) and by CLIM2POWER, Sweden. Project CLIM2POWER is part of ERA4CS, an ERA-NET initiated by JPI Climate and funded by FORMAS (SE), BMBF (DE), BMWFW (AT), FCT (PT), EPA (IE), ANR (FR) with co-funding by the European Union (Grant 690462). We would also like to thank SMHI, the Swedish Meteorological and Hydrological Institute, for providing the S-Hype data.
 
