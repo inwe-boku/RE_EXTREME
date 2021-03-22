@@ -1,8 +1,9 @@
 # RE_EXTREME
 
-These scripts contain:
-- the simulation of power generation (Nuclear, Fossil, Hydro, Wind, SolarPV) in Sweden with GAMS
-- possibility of simulating a multitude of simulations automatically according to a configuration file
+These scripts provide:
+
+- the simulation of power generation (Nuclear, Fossil, Hydro, Wind, SolarPV) in Sweden using GAMS
+- the possibility of simulating a multitude of simulations automatically according to a configuration file
 - the semi-automatic analysis of results from the simulations
 
 ## Scientific Articles
